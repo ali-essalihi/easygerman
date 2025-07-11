@@ -1,0 +1,7 @@
+{
+  "name": "@easygerman/api",
+  "private": true,
+  "dependencies": {
+    "@easygerman/shared": "workspace:*"
+  }
+}
