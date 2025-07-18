@@ -1,7 +1,20 @@
 {
   "name": "@easygerman/api",
   "private": true,
+  "scripts": {
+    "dev": "tsx watch --clear-screen=false --include src src/server.ts",
+    "build": "tsc",
+    "type-check": "tsc --noEmit"
+  },
   "dependencies": {
-    "@easygerman/shared": "workspace:*"
+    "@easygerman/shared": "workspace:*",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0"
+  },
+  "devDependencies": {
+    "@tsconfig/node20": "^20.1.6",
+    "@types/express": "^5.0.3",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
   }
 }
