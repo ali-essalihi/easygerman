@@ -1,5 +1,7 @@
 import express from 'express'
 import helmet from 'helmet'
+import errorHandler from './middlewares/error-handler'
+import AppError from './AppError'
 
 const app = express()
 
@@ -11,7 +13,9 @@ app.use(helmet.xFrameOptions({ action: 'deny' }))
 app.use(express.json())
 
 app.use((req, res) => {
-  res.end('Hello, world')
+  throw new AppError(404, 'The requested resource was not found')
 })
+
+app.use(errorHandler)
 
 export default app
