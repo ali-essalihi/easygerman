@@ -1,0 +1,15 @@
+import { z } from 'zod'
+
+const envSchema = z.object({
+  PORT: z.coerce.number().int().min(1).max(65535),
+})
+
+const envParsed = envSchema.safeParse(process.env)
+
+if (envParsed.error) {
+  console.error('Failed to parse environment variables.')
+  console.error(z.prettifyError(envParsed.error))
+  process.exit(1)
+}
+
+export default envParsed.data
