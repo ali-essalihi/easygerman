@@ -4,6 +4,9 @@ const envSchema = z.object({
   PORT: z.coerce.number().int().min(1).max(65535),
   DATABASE_URL: z.url(),
   ADMIN_GOOGLE_ID: z.string().nonempty(),
+  GOOGLE_CLIENT_ID: z.string().nonempty(),
+  GOOGLE_CLIENT_SECRET: z.string().nonempty(),
+  GOOGLE_REDIRECT_URI: z.url(),
 })
 
 const envParsed = envSchema.safeParse(process.env)
