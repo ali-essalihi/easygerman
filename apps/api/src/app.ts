@@ -3,6 +3,7 @@ import helmet from 'helmet'
 import errorHandler from './middlewares/error-handler'
 import AppError from './AppError'
 import authRouter from './routes/auth.routes'
+import hpp from 'hpp'
 
 const app = express()
 
@@ -11,6 +12,7 @@ app.disable('etag')
 
 app.use(helmet.xContentTypeOptions())
 app.use(helmet.xFrameOptions({ action: 'deny' }))
+app.use(hpp())
 app.use(express.json())
 
 app.use('/auth', authRouter)
