@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS videos (
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   google_id TEXT NOT NULL UNIQUE,
-  role role_enum NOT NULL
+  role role_enum NOT NULL DEFAULT 'learner'
 );
 
 CREATE TABLE IF NOT EXISTS user_completed_videos (

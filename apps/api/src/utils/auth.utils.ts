@@ -1,6 +1,7 @@
+import type { RoleEnum } from '../types/db'
 import { nextURLSchema } from '../schemas'
 import env from '../env'
-import { OAUTH_STATE_EXPIRY } from '../constants'
+import { ACCESS_TOKEN_EXPIRY, OAUTH_STATE_EXPIRY } from '../constants'
 import jwt from 'jsonwebtoken'
 
 export function sanitizeNextURL(nextURL: any) {
@@ -42,6 +43,54 @@ export function verifyOauthState(state: string) {
     return jwt.verify(state, env.OAUTH_STATE_SECRET, {
       algorithms: ['HS256'],
     }) as OauthStateJWTPayload
+  } catch {
+    return false
+  }
+}
+
+export async function fetchGoogleIdToken(code: string) {
+  const res = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    body: new URLSearchParams({
+      client_id: env.GOOGLE_CLIENT_ID,
+      client_secret: env.GOOGLE_CLIENT_SECRET,
+      grant_type: 'authorization_code',
+      redirect_uri: env.GOOGLE_REDIRECT_URI,
+      code,
+    }),
+  })
+  if (!res.ok) throw new Error(`Failed to fetch ID token from Google. Status: ${res.status}`)
+  const data = await res.json()
+  return (data as Record<any, any>).id_token as string
+}
+
+interface GoogleIdTokenDecoded {
+  sub: string
+  email: string
+}
+
+export function decodeGoogleIdToken(idToken: string) {
+  const decoded = jwt.decode(idToken)
+  if (!decoded) throw new Error('Failed to decode Google ID token.')
+  return decoded as GoogleIdTokenDecoded
+}
+
+type AccessTokenJWTPayload = GoogleIdTokenDecoded & {
+  role: RoleEnum
+}
+
+export function generateAccessToken(payload: AccessTokenJWTPayload) {
+  return jwt.sign(payload, env.ACCESS_TOKEN_SECRET, {
+    algorithm: 'HS256',
+    expiresIn: ACCESS_TOKEN_EXPIRY,
+  })
+}
+
+export function verifyAccessToken(token: string) {
+  try {
+    return jwt.verify(token, env.ACCESS_TOKEN_SECRET, {
+      algorithms: ['HS256'],
+    }) as AccessTokenJWTPayload
   } catch {
     return false
   }
