@@ -7,6 +7,7 @@ const envSchema = z.object({
   GOOGLE_CLIENT_ID: z.string().nonempty(),
   GOOGLE_CLIENT_SECRET: z.string().nonempty(),
   GOOGLE_REDIRECT_URI: z.url(),
+  OAUTH_STATE_SECRET: z.string().nonempty(),
 })
 
 const envParsed = envSchema.safeParse(process.env)
