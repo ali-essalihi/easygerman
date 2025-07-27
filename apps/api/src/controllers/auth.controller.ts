@@ -1,5 +1,5 @@
 import type { Request, Response } from 'express'
-import type { GetGoogleAuthUrlRes } from '@easygerman/shared/types'
+import type { GetCurrentUserRes, GetGoogleAuthUrlRes } from '@easygerman/shared/types'
 import {
   decodeGoogleIdToken,
   fetchGoogleIdToken,
@@ -86,4 +86,9 @@ export async function handleGoogleCallback(req: Request, res: Response) {
   }
 }
 
-export function getCurrentUser(req: Request, res: Response) {}
+export function getCurrentUser(req: Request, res: Response<GetCurrentUserRes>) {
+  res.json({
+    email: req.user.email,
+    role: req.user.role,
+  })
+}

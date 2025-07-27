@@ -5,6 +5,7 @@ import AppError from './AppError'
 import authRouter from './routes/auth.routes'
 import hpp from 'hpp'
 import cookieParser from 'cookie-parser'
+import { authenticate } from './middlewares/auth.middlewares'
 
 const app = express()
 
@@ -16,6 +17,8 @@ app.use(helmet.xFrameOptions({ action: 'deny' }))
 app.use(hpp())
 app.use(cookieParser())
 app.use(express.json())
+
+app.use(authenticate())
 
 app.use('/auth', authRouter)
 
