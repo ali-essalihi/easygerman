@@ -92,3 +92,8 @@ export function getCurrentUser(req: Request, res: Response<GetCurrentUserRes>) {
     role: req.user.role,
   })
 }
+
+export function logout(req: Request, res: Response) {
+  res.clearCookie(ACCESS_TOKEN_COOKIE_NAME, ACCESS_TOKEN_COOKIE_BASE_OPTIONS)
+  res.status(204).end()
+}

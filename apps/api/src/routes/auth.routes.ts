@@ -7,5 +7,6 @@ const router = express.Router()
 router.get('/google/url', authController.getGoogleAuthUrl)
 router.get('/google/callback', authController.handleGoogleCallback)
 router.get('/me', ensureAuthenticated(), authController.getCurrentUser)
+router.post('/logout', authController.logout)
 
 export default router
