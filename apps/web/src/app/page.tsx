@@ -1,5 +1,9 @@
-import Logo from '../components/Logo'
+import Logo from '@/components/Logo'
 
 export default function Home() {
-  return <Logo />
+  return (
+    <div className="container py-4">
+      <Logo />
+    </div>
+  )
 }
