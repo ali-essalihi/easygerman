@@ -14,7 +14,8 @@ export const AUTH_FAILED_REDIRECT_URL = new URL(
   env.CLIENT_ORIGIN
 ).toString()
 
-export const ACCESS_TOKEN_EXPIRY = '15d'
+export const DEFAULT_ACCESS_TOKEN_EXPIRY = '15d'
+export const ADMIN_ACCESS_TOKEN_EXPIRY = '1h'
 export const ACCESS_TOKEN_COOKIE_NAME = 'access_token'
 export const ACCESS_TOKEN_COOKIE_BASE_OPTIONS: CookieOptions = {
   secure: true,

@@ -12,7 +12,8 @@ import {
 import {
   ACCESS_TOKEN_COOKIE_BASE_OPTIONS,
   ACCESS_TOKEN_COOKIE_NAME,
-  ACCESS_TOKEN_EXPIRY,
+  DEFAULT_ACCESS_TOKEN_EXPIRY,
+  ADMIN_ACCESS_TOKEN_EXPIRY,
   AUTH_FAILED_REDIRECT_URL,
   OAUTH_STATE_COOKIE_BASE_OPTIONS,
   OAUTH_STATE_COOKIE_NAME,
@@ -68,7 +69,9 @@ export async function handleGoogleCallback(req: Request, res: Response) {
       await userModel.createIfNotExists(idTokenDecoded.sub)
     }
 
-    const accessToken = generateAccessToken({
+    const accessTokenExpiry = isAdmin ? ADMIN_ACCESS_TOKEN_EXPIRY : DEFAULT_ACCESS_TOKEN_EXPIRY
+
+    const accessToken = generateAccessToken(accessTokenExpiry, {
       sub: idTokenDecoded.sub,
       email: idTokenDecoded.email,
       role: isAdmin ? 'admin' : 'learner',
@@ -76,7 +79,7 @@ export async function handleGoogleCallback(req: Request, res: Response) {
 
     res.cookie(ACCESS_TOKEN_COOKIE_NAME, accessToken, {
       ...ACCESS_TOKEN_COOKIE_BASE_OPTIONS,
-      maxAge: ms(ACCESS_TOKEN_EXPIRY),
+      maxAge: ms(accessTokenExpiry),
     })
 
     res.redirect(302, new URL(stateDecoded.next_url, env.CLIENT_ORIGIN).toString())

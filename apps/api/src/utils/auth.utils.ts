@@ -1,7 +1,8 @@
 import type { RoleEnum } from '../types/db'
+import type { StringValue } from 'ms'
 import { nextURLSchema } from '../schemas'
 import env from '../env'
-import { ACCESS_TOKEN_EXPIRY, OAUTH_STATE_EXPIRY } from '../constants'
+import { OAUTH_STATE_EXPIRY } from '../constants'
 import jwt from 'jsonwebtoken'
 
 export function sanitizeNextURL(nextURL: any) {
@@ -79,10 +80,10 @@ type AccessTokenJWTPayload = GoogleIdTokenDecoded & {
   role: RoleEnum
 }
 
-export function generateAccessToken(payload: AccessTokenJWTPayload) {
+export function generateAccessToken(expiry: StringValue, payload: AccessTokenJWTPayload) {
   return jwt.sign(payload, env.ACCESS_TOKEN_SECRET, {
     algorithm: 'HS256',
-    expiresIn: ACCESS_TOKEN_EXPIRY,
+    expiresIn: expiry,
   })
 }
 
