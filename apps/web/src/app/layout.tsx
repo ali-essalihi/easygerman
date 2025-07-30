@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { SWRConfig } from 'swr'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -12,7 +13,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SWRConfig
+          value={{
+            shouldRetryOnError: false,
+            revalidateIfStale: false,
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+          }}
+        >
+          {children}
+        </SWRConfig>
+      </body>
     </html>
   )
 }
