@@ -1,4 +1,5 @@
 import type { CookieOptions } from 'express'
+import type { LevelEnum } from './types/db'
 import env from './env'
 
 export const OAUTH_STATE_EXPIRY = '10m'
@@ -22,3 +23,5 @@ export const ACCESS_TOKEN_COOKIE_BASE_OPTIONS: CookieOptions = {
   httpOnly: true,
   sameSite: 'none',
 }
+
+export const CEFR_LEVELS: LevelEnum[] = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']

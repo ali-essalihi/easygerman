@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser'
 import { authenticate } from './middlewares/auth.middlewares'
 import cors from 'cors'
 import env from './env'
+import levelsRouter from './routes/levels.routes'
 
 const app = express()
 
@@ -36,6 +37,7 @@ app.use(express.json())
 app.use(authenticate())
 
 app.use('/auth', authRouter)
+app.use('/levels', levelsRouter)
 
 app.use((req, res) => {
   throw new AppError(404, 'The requested resource was not found')
