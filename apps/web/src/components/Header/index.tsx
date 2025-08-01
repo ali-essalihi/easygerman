@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <header className="bg-white shadow py-2">
       <div className="container flex items-center justify-between">
-        <Link href="/" aria-label="Homepage">
+        <Link href="/" aria-label="Homepage" prefetch={false}>
           <Logo />
         </Link>
         <AuthButton />
