@@ -1,4 +1,7 @@
 {
   "name": "@easygerman/shared",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "zod": "^4.0.5"
+  }
 }
