@@ -9,6 +9,7 @@ import {
 import { ensureAdmin, ensureAuthenticated } from '../middlewares/auth.middlewares'
 import validateReqSchema from '../middlewares/validate-req-schema'
 import AppError from '../AppError'
+import videosRouter from './videos.routes'
 
 const router = express.Router({
   mergeParams: true,
@@ -25,6 +26,8 @@ router.param('topicId', async (req, res, next, value) => {
   req.topic = topic
   next()
 })
+
+router.use('/:topicId/videos', videosRouter)
 
 router.post(
   '/',
