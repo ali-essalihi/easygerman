@@ -15,6 +15,8 @@ export interface VideoRow {
   id: number
   topic_id: string
   yt_video_id: string
+  title: string
+  duration_seconds: number
   rank: string
 }
 

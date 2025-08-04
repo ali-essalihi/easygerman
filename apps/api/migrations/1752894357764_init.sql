@@ -17,6 +17,8 @@ CREATE TABLE IF NOT EXISTS videos (
   id SERIAL PRIMARY KEY,
   topic_id UUID NOT NULL REFERENCES topics(id) ON DELETE CASCADE,
   yt_video_id TEXT NOT NULL UNIQUE,
+  title TEXT NOT NULL,
+  duration_seconds INTEGER NOT NULL CHECK (duration_seconds >= 0),
   rank TEXT NOT NULL
 );
 
