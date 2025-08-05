@@ -9,6 +9,8 @@ import { authenticate } from './middlewares/auth.middlewares'
 import cors from 'cors'
 import env from './env'
 import levelsRouter from './routes/levels.routes'
+import topicsRouter from './routes/topics.routes'
+import videosRouter from './routes/videos.routes'
 
 const app = express()
 
@@ -38,6 +40,8 @@ app.use(authenticate())
 
 app.use('/auth', authRouter)
 app.use('/levels', levelsRouter)
+app.use('/topics', topicsRouter)
+app.use('/videos', videosRouter)
 
 app.use((req, res) => {
   throw new AppError(404, 'The requested resource was not found')

@@ -9,11 +9,8 @@ import {
 import { ensureAdmin, ensureAuthenticated } from '../middlewares/auth.middlewares'
 import validateReqSchema from '../middlewares/validate-req-schema'
 import AppError from '../AppError'
-import videosRouter from './videos.routes'
 
-const router = express.Router({
-  mergeParams: true,
-})
+const router = express.Router()
 
 router.param('topicId', async (req, res, next, value) => {
   if (!topicIdSchema.safeParse(value).success) {
@@ -27,8 +24,6 @@ router.param('topicId', async (req, res, next, value) => {
   next()
 })
 
-router.use('/:topicId/videos', videosRouter)
-
 router.post(
   '/',
   ensureAuthenticated(),
@@ -36,6 +31,7 @@ router.post(
   validateReqSchema(createTopicSchema),
   topicsController.createTopic
 )
+
 router.patch(
   '/:topicId',
   ensureAuthenticated(),
@@ -43,6 +39,7 @@ router.patch(
   validateReqSchema(updateTopicTitleSchema),
   topicsController.updateTopicTitle
 )
+
 router.delete('/:topicId', ensureAuthenticated(), ensureAdmin(), topicsController.deleteTopic)
 
 export default router

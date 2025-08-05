@@ -2,9 +2,7 @@ import express from 'express'
 import * as videosController from '../controllers/videos.controller'
 import { ensureAdmin, ensureAuthenticated } from '../middlewares/auth.middlewares'
 
-const router = express.Router({
-  mergeParams: true,
-})
+const router = express.Router()
 
 router.post('/', ensureAuthenticated(), ensureAdmin(), videosController.createVideo)
 router.patch(

@@ -1,17 +1,14 @@
 import express from 'express'
 import AppError from '../AppError'
-import { CEFR_LEVELS } from '../constants'
-import topicsRouter from './topics.routes'
+import { levelIdSchema } from '@easygerman/shared/schemas'
 
 const router = express.Router()
 
-router.param('levelId', (req, res, next, level) => {
-  if (!CEFR_LEVELS.includes(level)) {
+router.param('levelId', (req, res, next, value) => {
+  if (!levelIdSchema.safeParse(value).success) {
     throw new AppError(404, 'Level not found')
   }
   next()
 })
-
-router.use('/:levelId/topics', topicsRouter)
 
 export default router
