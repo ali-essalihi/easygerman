@@ -10,3 +10,13 @@ export const createTopicSchema = z.strictObject({
 export const updateTopicTitleSchema = z.strictObject({
   newTitle: topicTitleSchema,
 })
+
+export const ytVideoIdSchema = z.string().regex(/^[a-zA-Z0-9_-]{11}$/)
+export const createVideoSchema = z.strictObject({
+  topicId: topicIdSchema,
+  ytVideoId: ytVideoIdSchema,
+})
+export const changeVideoOrderSchema = z.strictObject({
+  before: ytVideoIdSchema.nullish(),
+  after: ytVideoIdSchema.nullish(),
+})

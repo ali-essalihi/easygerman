@@ -12,3 +12,6 @@ export interface GetCurrentUserRes {
 
 export type CreateTopicReq = z.infer<typeof schemas.createTopicSchema>
 export type UpdateTopicTitleReq = z.infer<typeof schemas.updateTopicTitleSchema>
+
+export type CreateVideoReq = z.infer<typeof schemas.createVideoSchema>
+export type ChangeVideoOrderReq = z.infer<typeof schemas.changeVideoOrderSchema>

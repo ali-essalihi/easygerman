@@ -1,4 +1,4 @@
-import type { RoleEnum, TopicRow } from './db'
+import type { RoleEnum, TopicRow, VideoRow } from './db'
 
 declare global {
   namespace Express {
@@ -9,6 +9,7 @@ declare global {
         role: RoleEnum
       }
       topic: TopicRow
+      video: VideoRow
     }
   }
 }

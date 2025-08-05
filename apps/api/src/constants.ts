@@ -22,3 +22,5 @@ export const ACCESS_TOKEN_COOKIE_BASE_OPTIONS: CookieOptions = {
   httpOnly: true,
   sameSite: 'none',
 }
+
+export const EASY_GERMAN_CHANNEL_ID = 'UCbxb2fqe9oNgglAoYqsYOtQ'
