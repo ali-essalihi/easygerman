@@ -1,6 +1,12 @@
 import type { Request, Response } from 'express'
-import type { ChangeVideoOrderReq, CreateVideoReq } from '@easygerman/shared/types'
+import type {
+  ChangeVideoOrderReq,
+  CreateVideoReq,
+  ToggleCompleteRes,
+} from '@easygerman/shared/types'
 import * as videosModel from '../models/videos.model'
+import * as userCompletedVideosModel from '../models/user-completed-videos.model'
+import * as userModel from '../models/user.model'
 import iso8601Duration from 'iso8601-duration'
 import { getYoutubeVideo } from '../utils/youtube.utils'
 import { isValidEasyGermanVideo } from '../utils/videos.utils'
@@ -79,4 +85,20 @@ export async function deleteVideo(req: Request, res: Response) {
   const { videoId: ytVideoId } = req.params
   await videosModel.remove(ytVideoId)
   res.status(204).end()
+}
+
+export async function toggleComplete(req: Request, res: Response<ToggleCompleteRes>) {
+  const dbUser = (await userModel.find(req.user.googleId))!
+  const insertResult = await userCompletedVideosModel.createIfNotExists({
+    user_id: dbUser.id,
+    video_id: req.video.id,
+  })
+  if (insertResult.rowCount === 0) {
+    await userCompletedVideosModel.remove({
+      user_id: dbUser.id,
+      video_id: req.video.id,
+    })
+    return res.json({ completed: false })
+  }
+  res.json({ completed: true })
 }

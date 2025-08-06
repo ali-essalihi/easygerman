@@ -15,3 +15,7 @@ export type UpdateTopicTitleReq = z.infer<typeof schemas.updateTopicTitleSchema>
 
 export type CreateVideoReq = z.infer<typeof schemas.createVideoSchema>
 export type ChangeVideoOrderReq = z.infer<typeof schemas.changeVideoOrderSchema>
+
+export interface ToggleCompleteRes {
+  completed: boolean
+}

@@ -44,4 +44,6 @@ router.patch(
 
 router.delete('/:videoId', ensureAuthenticated(), ensureAdmin(), videosController.deleteVideo)
 
+router.patch('/:videoId/toggle-complete', ensureAuthenticated(), videosController.toggleComplete)
+
 export default router
