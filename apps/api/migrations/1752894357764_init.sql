@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS levels (
 CREATE TABLE IF NOT EXISTS topics (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   level_id level_enum NOT NULL REFERENCES levels(id),
-  title TEXT NOT NULL
+  title TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS videos (
@@ -19,18 +20,21 @@ CREATE TABLE IF NOT EXISTS videos (
   yt_video_id TEXT NOT NULL UNIQUE,
   title TEXT NOT NULL,
   duration_seconds INTEGER NOT NULL CHECK (duration_seconds >= 0),
-  rank TEXT NOT NULL COLLATE "C"
+  rank TEXT NOT NULL COLLATE "C",
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   google_id TEXT NOT NULL UNIQUE,
-  role role_enum NOT NULL DEFAULT 'learner'
+  role role_enum NOT NULL DEFAULT 'learner',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS user_completed_videos (
   user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   video_id INTEGER NOT NULL REFERENCES videos(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   PRIMARY KEY (user_id, video_id)
 );
 

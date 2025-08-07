@@ -9,6 +9,7 @@ export interface TopicRow {
   id: string
   level_id: LevelEnum
   title: string
+  created_at: Date
 }
 
 export interface VideoRow {
@@ -18,15 +19,18 @@ export interface VideoRow {
   title: string
   duration_seconds: number
   rank: string
+  created_at: Date
 }
 
 export interface UserRow {
   id: number
   google_id: string
   role: RoleEnum
+  created_at: Date
 }
 
 export interface UserCompletedVideoRow {
   user_id: number
   video_id: number
+  created_at: Date
 }
