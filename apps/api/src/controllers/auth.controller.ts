@@ -82,6 +82,8 @@ export async function handleGoogleCallback(req: Request, res: Response) {
       maxAge: ms(accessTokenExpiry),
     })
 
+    res.clearCookie(OAUTH_STATE_COOKIE_NAME, OAUTH_STATE_COOKIE_BASE_OPTIONS)
+
     res.redirect(302, new URL(stateDecoded.next_url, env.CLIENT_ORIGIN).toString())
   } catch (e) {
     console.error('OAuth callback error:', e)
