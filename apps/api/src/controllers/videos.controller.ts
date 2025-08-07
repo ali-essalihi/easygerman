@@ -9,6 +9,7 @@ import type {
 import * as videosModel from '../models/videos.model'
 import * as userCompletedVideosModel from '../models/user-completed-videos.model'
 import * as userModel from '../models/user.model'
+import * as topicsModel from '../models/topics.model'
 import iso8601Duration from 'iso8601-duration'
 import { getYoutubeVideo } from '../utils/youtube.utils'
 import { isValidEasyGermanVideo } from '../utils/videos.utils'
@@ -17,6 +18,11 @@ import AppError from '../AppError'
 
 export async function createVideo(req: Request, res: Response) {
   const body = req.body as CreateVideoReq
+  const topic = await topicsModel.find(body.topicId)
+
+  if (!topic) {
+    throw new AppError(404, 'Topic not found')
+  }
 
   if (await videosModel.find(body.ytVideoId)) {
     throw new AppError(409, 'Video already exists')
