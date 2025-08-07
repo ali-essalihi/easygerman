@@ -25,9 +25,9 @@ export function create(payload: CreatePayload) {
   ])
 }
 
-export async function getMaxRank() {
-  const { max } = (await pool.query('SELECT max(rank) FROM videos')).rows[0]
-  return max as string | null
+export async function getMaxRank(topicId: string) {
+  const { rows } = await pool.query('SELECT max(rank) FROM videos WHERE topic_id = $1', [topicId])
+  return rows[0].max as string | null
 }
 
 export function updateRank(ytVideoId: string, newRank: string) {

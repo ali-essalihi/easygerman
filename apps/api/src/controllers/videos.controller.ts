@@ -28,7 +28,7 @@ export async function createVideo(req: Request, res: Response) {
     throw new AppError(422, 'Invalid Easy German video')
   }
 
-  const maxRank = await videosModel.getMaxRank()
+  const maxRank = await videosModel.getMaxRank(body.topicId)
   const rank = generateKeyBetween(maxRank, null)
   const durationSeconds = iso8601Duration.toSeconds(
     iso8601Duration.parse(ytVideo.contentDetails.duration)
