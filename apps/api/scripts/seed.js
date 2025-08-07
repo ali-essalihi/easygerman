@@ -11,7 +11,7 @@ async function runSeed() {
 
     async function createAdmin() {
       const q = `
-        INSERT INTO users(id, google_id, role) VALUES (1, $1, 'admin')
+        INSERT INTO users(google_id, role) VALUES ($1, 'admin')
         ON CONFLICT DO NOTHING
       `
       await client.query(q, [process.env.ADMIN_GOOGLE_ID])
