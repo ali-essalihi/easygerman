@@ -26,6 +26,8 @@ router.param('topicId', async (req, res, next, value) => {
 
 router.get('/progress', ensureAuthenticated(), topicsController.getTopicsProgress)
 
+router.get('/', topicsController.getAllTopics)
+
 router.post(
   '/',
   ensureAuthenticated(),

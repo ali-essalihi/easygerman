@@ -1,5 +1,6 @@
 import type {
   CreateTopicReq,
+  GetAllTopicsRes,
   GetTopicsProgressRes,
   UpdateTopicTitleReq,
 } from '@easygerman/shared/types'
@@ -48,4 +49,19 @@ export async function getTopicsProgress(req: Request, res: Response<GetTopicsPro
   }
 
   res.json(progress)
+}
+
+export async function getAllTopics(req: Request, res: Response<GetAllTopicsRes>) {
+  const levelIdParsed = levelIdSchema.safeParse(req.query.levelId)
+  if (!levelIdParsed.success) {
+    throw new AppError(400, 'Invalid levelId')
+  }
+  const levelId = levelIdParsed.data
+  const topics = await topicsModel.getAll(levelId)
+  res.json({
+    topics: topics.map((t) => ({
+      id: t.id,
+      title: t.title,
+    })),
+  })
 }

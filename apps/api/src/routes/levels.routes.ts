@@ -13,6 +13,8 @@ router.param('levelId', (req, res, next, value) => {
   next()
 })
 
+router.get('/:levelId', levelsController.getLevelSummary)
+
 router.get('/:levelId/progress', ensureAuthenticated(), levelsController.getLevelProgress)
 
 export default router

@@ -30,3 +30,24 @@ export type GetTopicsProgressRes = Record<string, number>
 export interface GetVideosProgressRes {
   completedVideos: string[]
 }
+
+export interface GetLevelSummaryRes {
+  totalTopics: number
+  totalVideos: number
+  totalSeconds: number
+}
+
+export interface GetAllTopicsRes {
+  topics: {
+    id: string
+    title: string
+  }[]
+}
+
+export interface GetAllVideosRes {
+  videos: {
+    ytVideoId: string
+    title: string
+    durationSeconds: number
+  }[]
+}

@@ -1,5 +1,5 @@
+import type { LevelEnum, TopicRow } from '../types/db'
 import pool from '../pool'
-import type { TopicRow } from '../types/db'
 
 export async function find(id: string) {
   const result = await pool.query('SELECT * FROM topics WHERE id = $1', [id])
@@ -19,4 +19,11 @@ export function updateTitle(id: string, newTitle: string) {
 
 export function remove(id: string) {
   return pool.query('DELETE FROM topics WHERE id = $1', [id])
+}
+
+export async function getAll(levelId: LevelEnum) {
+  const { rows } = await pool.query('SELECT * FROM topics WHERE level_id = $1 ORDER BY title', [
+    levelId,
+  ])
+  return rows as TopicRow[]
 }

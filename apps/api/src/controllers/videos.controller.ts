@@ -2,11 +2,11 @@ import type { Request, Response } from 'express'
 import type {
   ChangeVideoOrderReq,
   CreateVideoReq,
+  GetAllVideosRes,
   GetVideosProgressRes,
   ToggleCompleteRes,
 } from '@easygerman/shared/types'
 import * as videosModel from '../models/videos.model'
-import * as topicsModel from '../models/topics.model'
 import * as userCompletedVideosModel from '../models/user-completed-videos.model'
 import * as userModel from '../models/user.model'
 import iso8601Duration from 'iso8601-duration'
@@ -14,7 +14,6 @@ import { getYoutubeVideo } from '../utils/youtube.utils'
 import { isValidEasyGermanVideo } from '../utils/videos.utils'
 import { generateKeyBetween } from 'fractional-indexing'
 import AppError from '../AppError'
-import { topicIdSchema } from '@easygerman/shared/schemas'
 
 export async function createVideo(req: Request, res: Response) {
   const body = req.body as CreateVideoReq
@@ -107,21 +106,19 @@ export async function toggleComplete(req: Request, res: Response<ToggleCompleteR
 }
 
 export async function getVideosProgress(req: Request, res: Response<GetVideosProgressRes>) {
-  const topicIdParsed = topicIdSchema.safeParse(req.query.topicId)
-
-  if (!topicIdParsed.success) {
-    throw new AppError(400, 'Invalid topicId')
-  }
-
-  const topic = await topicsModel.find(topicIdParsed.data)
-
-  if (!topic) {
-    throw new AppError(404, 'Topic not found')
-  }
-
   const dbUser = (await userModel.find(req.user.googleId))!
-  const progress = await userCompletedVideosModel.calcVideosProgress(dbUser.id, topic.id)
+  const progress = await userCompletedVideosModel.calcVideosProgress(dbUser.id, req.topic.id)
   const completedVideos = progress.map(({ yt_video_id }) => yt_video_id)
-
   res.json({ completedVideos })
+}
+
+export async function getAllVideos(req: Request, res: Response<GetAllVideosRes>) {
+  const videos = await videosModel.getAll(req.topic.id)
+  res.json({
+    videos: videos.map((v) => ({
+      ytVideoId: v.yt_video_id,
+      title: v.title,
+      durationSeconds: v.duration_seconds,
+    })),
+  })
 }

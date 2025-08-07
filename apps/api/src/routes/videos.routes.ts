@@ -1,3 +1,4 @@
+import type { Request, Response, NextFunction } from 'express'
 import express from 'express'
 import * as videosController from '../controllers/videos.controller'
 import * as videosModel from '../models/videos.model'
@@ -7,6 +8,7 @@ import {
   createVideoSchema,
   changeVideoOrderSchema,
   ytVideoIdSchema,
+  topicIdSchema,
 } from '@easygerman/shared/schemas'
 import validateReqSchema from '../middlewares/validate-req-schema'
 import AppError from '../AppError'
@@ -26,7 +28,29 @@ router.param('videoId', async (req, res, next, value) => {
   next()
 })
 
-router.get('/progress', ensureAuthenticated(), videosController.getVideosProgress)
+function loadTopicFromQuery() {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const topicIdParsed = topicIdSchema.safeParse(req.query.topicId)
+    if (!topicIdParsed.success) {
+      throw new AppError(400, 'Invalid topicId')
+    }
+    const topic = await topicsModel.find(topicIdParsed.data)
+    if (!topic) {
+      throw new AppError(404, 'Topic not found')
+    }
+    req.topic = topic
+    next()
+  }
+}
+
+router.get(
+  '/progress',
+  ensureAuthenticated(),
+  loadTopicFromQuery(),
+  videosController.getVideosProgress
+)
+
+router.get('/', loadTopicFromQuery(), videosController.getAllVideos)
 
 router.post(
   '/',

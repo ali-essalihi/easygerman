@@ -37,3 +37,10 @@ export function updateRank(ytVideoId: string, newRank: string) {
 export function remove(ytVideoId: string) {
   return pool.query('DELETE FROM videos WHERE yt_video_id = $1', [ytVideoId])
 }
+
+export async function getAll(topicId: string) {
+  const { rows } = await pool.query('SELECT * FROM videos WHERE topic_id = $1 ORDER BY rank', [
+    topicId,
+  ])
+  return rows as VideoRow[]
+}
