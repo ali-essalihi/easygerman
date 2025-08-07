@@ -9,10 +9,7 @@ export const OAUTH_STATE_COOKIE_BASE_OPTIONS: CookieOptions = {
   sameSite: 'none',
 }
 
-export const AUTH_FAILED_REDIRECT_URL = new URL(
-  '/error?code=auth_failed',
-  env.CLIENT_ORIGIN
-).toString()
+export const AUTH_FAILED_REDIRECT_URL = new URL('/error/auth_failed', env.CLIENT_ORIGIN).toString()
 
 export const DEFAULT_ACCESS_TOKEN_EXPIRY = '15d'
 export const ADMIN_ACCESS_TOKEN_EXPIRY = '1h'
