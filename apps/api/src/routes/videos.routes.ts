@@ -26,6 +26,8 @@ router.param('videoId', async (req, res, next, value) => {
   next()
 })
 
+router.get('/progress', ensureAuthenticated(), videosController.getVideosProgress)
+
 router.post(
   '/',
   ensureAuthenticated(),

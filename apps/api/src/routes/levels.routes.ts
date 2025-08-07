@@ -1,6 +1,8 @@
 import express from 'express'
+import * as levelsController from '../controllers/levels.controller'
 import AppError from '../AppError'
 import { levelIdSchema } from '@easygerman/shared/schemas'
+import { ensureAuthenticated } from '../middlewares/auth.middlewares'
 
 const router = express.Router()
 
@@ -10,5 +12,7 @@ router.param('levelId', (req, res, next, value) => {
   }
   next()
 })
+
+router.get('/:levelId/progress', ensureAuthenticated(), levelsController.getLevelProgress)
 
 export default router

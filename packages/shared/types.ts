@@ -19,3 +19,14 @@ export type ChangeVideoOrderReq = z.infer<typeof schemas.changeVideoOrderSchema>
 export interface ToggleCompleteRes {
   completed: boolean
 }
+
+export interface GetLevelProgressRes {
+  totalCompletedTopics: number
+  totalCompletedVideos: number
+}
+
+export type GetTopicsProgressRes = Record<string, number>
+
+export interface GetVideosProgressRes {
+  completedVideos: string[]
+}
