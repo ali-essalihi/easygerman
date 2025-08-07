@@ -7,7 +7,6 @@ import type {
 import type { Request, Response } from 'express'
 import * as topicsModel from '../models/topics.model'
 import * as userModel from '../models/user.model'
-import * as userCompletedVideosModel from '../models/user-completed-videos.model'
 import { levelIdSchema } from '@easygerman/shared/schemas'
 import AppError from '../AppError'
 
@@ -42,7 +41,7 @@ export async function getTopicsProgress(req: Request, res: Response<GetTopicsPro
   const levelId = levelIdParsed.data
   const dbUser = (await userModel.find(req.user.googleId))!
   const progress: GetTopicsProgressRes = {}
-  const topics = await userCompletedVideosModel.calcTopicsProgress(dbUser.id, levelId)
+  const topics = await topicsModel.getCompletedCount(dbUser.id, levelId)
 
   for (const topic of topics) {
     progress[topic.topic_id] = topic.total_completed_videos

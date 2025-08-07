@@ -27,3 +27,20 @@ export async function getAll(levelId: LevelEnum) {
   ])
   return rows as TopicRow[]
 }
+
+interface GetCompletedCountRow {
+  topic_id: string
+  total_completed_videos: number
+}
+
+export async function getCompletedCount(userId: number, levelId: LevelEnum) {
+  const q = `
+    SELECT t.id as topic_id, count(ucv.video_id)::INTEGER as total_completed_videos FROM topics t
+    LEFT JOIN videos v ON v.topic_id = t.id
+    LEFT JOIN user_completed_videos ucv ON ucv.user_id = $1 AND ucv.video_id = v.id
+    WHERE t.level_id = $2
+    GROUP BY t.id
+  `
+  const { rows } = await pool.query(q, [userId, levelId])
+  return rows as GetCompletedCountRow[]
+}

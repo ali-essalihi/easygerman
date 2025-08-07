@@ -107,9 +107,8 @@ export async function toggleComplete(req: Request, res: Response<ToggleCompleteR
 
 export async function getVideosProgress(req: Request, res: Response<GetVideosProgressRes>) {
   const dbUser = (await userModel.find(req.user.googleId))!
-  const progress = await userCompletedVideosModel.calcVideosProgress(dbUser.id, req.topic.id)
-  const completedVideos = progress.map(({ yt_video_id }) => yt_video_id)
-  res.json({ completedVideos })
+  const completedVideos = await userCompletedVideosModel.getAll(dbUser.id, req.topic.id)
+  res.json({ completedVideos: completedVideos.map(({ yt_video_id }) => yt_video_id) })
 }
 
 export async function getAllVideos(req: Request, res: Response<GetAllVideosRes>) {
