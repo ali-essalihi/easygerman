@@ -1,5 +1,7 @@
+import type { LevelId } from '@easygerman/shared/types'
+
 export interface CEFRLevel {
-  level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
+  level: LevelId
   label: string
   color: string
 }

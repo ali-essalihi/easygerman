@@ -1,13 +1,15 @@
 import { z } from 'zod'
 import * as schemas from './schemas'
 
+export type UserRole = z.infer<typeof schemas.userRoleSchema>
+
 export interface GetGoogleAuthUrlRes {
   url: string
 }
 
 export interface GetCurrentUserRes {
   email: string
-  role: 'admin' | 'learner'
+  role: UserRole
 }
 
 export type CreateTopicReq = z.infer<typeof schemas.createTopicSchema>
@@ -16,7 +18,7 @@ export type UpdateTopicTitleReq = z.infer<typeof schemas.updateTopicTitleSchema>
 export type CreateVideoReq = z.infer<typeof schemas.createVideoSchema>
 export type ChangeVideoOrderReq = z.infer<typeof schemas.changeVideoOrderSchema>
 
-export interface ToggleCompleteRes {
+export interface ToggleCompleteVideoRes {
   completed: boolean
 }
 
@@ -50,4 +52,20 @@ export interface GetAllVideosRes {
     title: string
     durationSeconds: number
   }[]
+}
+
+export type LevelId = z.infer<typeof schemas.levelIdSchema>
+
+export interface GetTopicDetailRes {
+  levelId: LevelId
+  id: string
+  title: string
+}
+
+export interface GetVideoDetailRes {
+  levelId: LevelId
+  topicId: string
+  ytVideoId: string
+  title: string
+  durationSeconds: number
 }

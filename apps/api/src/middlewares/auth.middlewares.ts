@@ -10,11 +10,7 @@ export function authenticate() {
     if (!decoded) {
       return next()
     }
-    req.user = {
-      googleId: decoded.sub,
-      email: decoded.email,
-      role: decoded.role,
-    }
+    req.user = decoded
     next()
   }
 }

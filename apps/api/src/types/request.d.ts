@@ -1,15 +1,13 @@
-import type { RoleEnum, TopicRow, VideoRow } from './db'
+import type { AccessTokenJWTPayload } from './auth.types'
+import type { LevelRow, TopicRow, VideoRow } from './db'
 
 declare global {
   namespace Express {
     interface Request {
-      user: {
-        googleId: string
-        email: string
-        role: RoleEnum
-      }
+      user: AccessTokenJWTPayload
       topic: TopicRow
       video: VideoRow
+      level: LevelRow
     }
   }
 }

@@ -1,5 +1,7 @@
-export type LevelEnum = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
-export type RoleEnum = 'learner' | 'admin'
+import type { UserRole, LevelId } from '@easygerman/shared/types'
+
+export type LevelEnum = LevelId
+export type RoleEnum = UserRole
 
 export interface LevelRow {
   id: LevelEnum

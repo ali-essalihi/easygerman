@@ -63,16 +63,17 @@ export async function handleGoogleCallback(req: Request, res: Response) {
 
     const idToken = await fetchGoogleIdToken(queryParsed.data.code)
     const idTokenDecoded = decodeGoogleIdToken(idToken)
-    const isAdmin = env.ADMIN_GOOGLE_ID === idTokenDecoded.sub
+    const googleId = idTokenDecoded.sub
+    const isAdmin = env.ADMIN_GOOGLE_ID === googleId
 
     if (!isAdmin) {
-      await userModel.createIfNotExists(idTokenDecoded.sub)
+      await userModel.createIfNotExists(googleId)
     }
 
     const accessTokenExpiry = isAdmin ? ADMIN_ACCESS_TOKEN_EXPIRY : DEFAULT_ACCESS_TOKEN_EXPIRY
 
     const accessToken = generateAccessToken(accessTokenExpiry, {
-      sub: idTokenDecoded.sub,
+      googleId,
       email: idTokenDecoded.email,
       role: isAdmin ? 'admin' : 'learner',
     })

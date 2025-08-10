@@ -3,18 +3,20 @@ import type {
   ChangeVideoOrderReq,
   CreateVideoReq,
   GetAllVideosRes,
+  GetVideoDetailRes,
   GetVideosProgressRes,
-  ToggleCompleteRes,
+  ToggleCompleteVideoRes,
 } from '@easygerman/shared/types'
 import * as videosModel from '../models/videos.model'
 import * as userCompletedVideosModel from '../models/user-completed-videos.model'
 import * as userModel from '../models/user.model'
 import * as topicsModel from '../models/topics.model'
 import iso8601Duration from 'iso8601-duration'
-import { getYoutubeVideo } from '../utils/youtube.utils'
+import { getYoutubeVideo } from '../services/youtube'
 import { isValidEasyGermanVideo } from '../utils/videos.utils'
 import { generateKeyBetween } from 'fractional-indexing'
 import AppError from '../AppError'
+import events from '../events'
 
 export async function createVideo(req: Request, res: Response) {
   const body = req.body as CreateVideoReq
@@ -48,12 +50,17 @@ export async function createVideo(req: Request, res: Response) {
     rank,
   })
 
+  events.emit('video.created', {
+    levelId: topic.level_id,
+    topicId: topic.id,
+  })
+
   res.status(201).end()
 }
 
 export async function changeVideoOrder(req: Request, res: Response) {
   const { before, after } = req.body as ChangeVideoOrderReq
-  const { videoId: ytVideoId } = req.params
+  const { ytVideoId } = req.params
 
   if (!before && !after) {
     throw new AppError(400, 'Either "before" or "after" must be provided.')
@@ -86,16 +93,24 @@ export async function changeVideoOrder(req: Request, res: Response) {
 
   await videosModel.updateRank(ytVideoId, rank)
 
+  events.emit('video.rank.updated', {
+    topicId: req.video.topic_id,
+  })
+
   res.status(204).end()
 }
 
 export async function deleteVideo(req: Request, res: Response) {
-  const { videoId: ytVideoId } = req.params
-  await videosModel.remove(ytVideoId)
+  await videosModel.remove(req.video.yt_video_id)
+  events.emit('video.deleted', {
+    levelId: req.topic.level_id,
+    topicId: req.topic.id,
+    ytVideoId: req.video.yt_video_id,
+  })
   res.status(204).end()
 }
 
-export async function toggleComplete(req: Request, res: Response<ToggleCompleteRes>) {
+export async function toggleCompleteVideo(req: Request, res: Response<ToggleCompleteVideoRes>) {
   const dbUser = (await userModel.find(req.user.googleId))!
   const insertResult = await userCompletedVideosModel.createIfNotExists({
     user_id: dbUser.id,
@@ -125,5 +140,15 @@ export async function getAllVideos(req: Request, res: Response<GetAllVideosRes>)
       title: v.title,
       durationSeconds: v.duration_seconds,
     })),
+  })
+}
+
+export async function getVideoDetail(req: Request, res: Response<GetVideoDetailRes>) {
+  res.json({
+    levelId: req.topic.level_id,
+    topicId: req.topic.id,
+    ytVideoId: req.video.yt_video_id,
+    title: req.video.title,
+    durationSeconds: req.video.duration_seconds,
   })
 }

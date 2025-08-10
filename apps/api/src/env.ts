@@ -11,6 +11,7 @@ const envSchema = z.object({
   CLIENT_ORIGIN: z.url(),
   ACCESS_TOKEN_SECRET: z.string().nonempty(),
   YOUTUBE_API_KEY: z.string().nonempty(),
+  NEXT_REVALIDATION_SECRET: z.string().nonempty(),
 })
 
 const envParsed = envSchema.safeParse(process.env)

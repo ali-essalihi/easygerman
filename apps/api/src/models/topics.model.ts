@@ -33,7 +33,7 @@ interface GetCompletedCountRow {
   total_completed_videos: number
 }
 
-export async function getCompletedCount(userId: number, levelId: LevelEnum) {
+export async function getUserCompletedVideosCount(userId: number, levelId: LevelEnum) {
   const q = `
     SELECT t.id as topic_id, count(ucv.video_id)::INTEGER as total_completed_videos FROM topics t
     LEFT JOIN videos v ON v.topic_id = t.id

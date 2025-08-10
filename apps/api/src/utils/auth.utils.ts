@@ -1,17 +1,17 @@
-import type { RoleEnum } from '../types/db'
 import type { StringValue } from 'ms'
+import type {
+  AccessTokenJWTPayload,
+  GoogleIdTokenDecoded,
+  OauthStateJWTPayload,
+} from '../types/auth.types'
 import { nextURLSchema } from '../schemas'
-import env from '../env'
 import { OAUTH_STATE_EXPIRY } from '../constants'
+import env from '../env'
 import jwt from 'jsonwebtoken'
 
 export function sanitizeNextURL(nextURL: any) {
   const parsed = nextURLSchema.safeParse(nextURL)
   return parsed.success ? parsed.data : '/'
-}
-
-interface OauthStateJWTPayload {
-  next_url: string
 }
 
 export function generateOauthState(nextURL: string) {
@@ -65,19 +65,10 @@ export async function fetchGoogleIdToken(code: string) {
   return (data as Record<any, any>).id_token as string
 }
 
-interface GoogleIdTokenDecoded {
-  sub: string
-  email: string
-}
-
 export function decodeGoogleIdToken(idToken: string) {
   const decoded = jwt.decode(idToken)
   if (!decoded) throw new Error('Failed to decode Google ID token.')
   return decoded as GoogleIdTokenDecoded
-}
-
-type AccessTokenJWTPayload = GoogleIdTokenDecoded & {
-  role: RoleEnum
 }
 
 export function generateAccessToken(expiry: StringValue, payload: AccessTokenJWTPayload) {

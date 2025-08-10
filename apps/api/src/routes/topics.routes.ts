@@ -1,32 +1,22 @@
 import express from 'express'
 import * as topicsController from '../controllers/topics.controller'
-import * as topicsModel from '../models/topics.model'
-import {
-  createTopicSchema,
-  topicIdSchema,
-  updateTopicTitleSchema,
-} from '@easygerman/shared/schemas'
+import { createTopicSchema, updateTopicTitleSchema } from '@easygerman/shared/schemas'
 import { ensureAdmin, ensureAuthenticated } from '../middlewares/auth.middlewares'
 import validateReqSchema from '../middlewares/validate-req-schema'
-import AppError from '../AppError'
+import { loadLevel, loadTopic } from '../middlewares/db-loaders'
 
 const router = express.Router()
 
-router.param('topicId', async (req, res, next, value) => {
-  if (!topicIdSchema.safeParse(value).success) {
-    throw new AppError(404, 'Topic not found')
-  }
-  const topic = await topicsModel.find(value)
-  if (!topic) {
-    throw new AppError(404, 'Topic not found')
-  }
-  req.topic = topic
-  next()
-})
+router.get(
+  '/progress',
+  ensureAuthenticated(),
+  loadLevel('query'),
+  topicsController.getTopicsProgress
+)
 
-router.get('/progress', ensureAuthenticated(), topicsController.getTopicsProgress)
+router.get('/', loadLevel('query'), topicsController.getAllTopics)
 
-router.get('/', topicsController.getAllTopics)
+router.get('/:topicId', loadTopic('params'), topicsController.getTopicDetail)
 
 router.post(
   '/',
@@ -41,9 +31,16 @@ router.patch(
   ensureAuthenticated(),
   ensureAdmin(),
   validateReqSchema(updateTopicTitleSchema),
+  loadTopic('params'),
   topicsController.updateTopicTitle
 )
 
-router.delete('/:topicId', ensureAuthenticated(), ensureAdmin(), topicsController.deleteTopic)
+router.delete(
+  '/:topicId',
+  ensureAuthenticated(),
+  ensureAdmin(),
+  loadTopic('params'),
+  topicsController.deleteTopic
+)
 
 export default router

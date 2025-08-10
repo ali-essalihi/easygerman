@@ -1,5 +1,5 @@
 import pool from '../pool'
-import { VideoRow } from '../types/db'
+import type { VideoRow } from '../types/db'
 
 export async function find(ytVideoId: string) {
   const result = await pool.query('SELECT * FROM videos WHERE yt_video_id = $1', [ytVideoId])

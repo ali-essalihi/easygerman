@@ -1,14 +1,14 @@
 import type {
   CreateTopicReq,
   GetAllTopicsRes,
+  GetTopicDetailRes,
   GetTopicsProgressRes,
   UpdateTopicTitleReq,
 } from '@easygerman/shared/types'
 import type { Request, Response } from 'express'
 import * as topicsModel from '../models/topics.model'
 import * as userModel from '../models/user.model'
-import { levelIdSchema } from '@easygerman/shared/schemas'
-import AppError from '../AppError'
+import events from '../events'
 
 export async function createTopic(req: Request, res: Response) {
   const body = req.body as CreateTopicReq
@@ -16,51 +16,55 @@ export async function createTopic(req: Request, res: Response) {
     level_id: body.levelId,
     title: body.title,
   })
+  events.emit('topic.created', {
+    levelId: body.levelId,
+  })
   res.status(201).end()
 }
 
 export async function updateTopicTitle(req: Request, res: Response) {
   const body = req.body as UpdateTopicTitleReq
   await topicsModel.updateTitle(req.topic.id, body.newTitle)
+  events.emit('topic.title.updated', {
+    levelId: req.topic.level_id,
+    topicId: req.topic.id,
+  })
   res.status(204).end()
 }
 
 export async function deleteTopic(req: Request, res: Response) {
-  const { topicId } = req.params
-  await topicsModel.remove(topicId)
+  await topicsModel.remove(req.topic.id)
+  events.emit('topic.deleted', {
+    levelId: req.topic.level_id,
+    topicId: req.topic.id,
+  })
   res.status(204).end()
 }
 
 export async function getTopicsProgress(req: Request, res: Response<GetTopicsProgressRes>) {
-  const levelIdParsed = levelIdSchema.safeParse(req.query.levelId)
-
-  if (!levelIdParsed.success) {
-    throw new AppError(400, 'Invalid levelId')
-  }
-
-  const levelId = levelIdParsed.data
   const dbUser = (await userModel.find(req.user.googleId))!
   const progress: GetTopicsProgressRes = {}
-  const topics = await topicsModel.getCompletedCount(dbUser.id, levelId)
-
+  const topics = await topicsModel.getUserCompletedVideosCount(dbUser.id, req.level.id)
   for (const topic of topics) {
     progress[topic.topic_id] = topic.total_completed_videos
   }
-
   res.json(progress)
 }
 
 export async function getAllTopics(req: Request, res: Response<GetAllTopicsRes>) {
-  const levelIdParsed = levelIdSchema.safeParse(req.query.levelId)
-  if (!levelIdParsed.success) {
-    throw new AppError(400, 'Invalid levelId')
-  }
-  const levelId = levelIdParsed.data
-  const topics = await topicsModel.getAll(levelId)
+  const topics = await topicsModel.getAll(req.level.id)
   res.json({
     topics: topics.map((t) => ({
       id: t.id,
       title: t.title,
     })),
+  })
+}
+
+export async function getTopicDetail(req: Request, res: Response<GetTopicDetailRes>) {
+  res.json({
+    id: req.topic.id,
+    levelId: req.topic.level_id,
+    title: req.topic.title,
   })
 }

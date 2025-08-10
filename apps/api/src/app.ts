@@ -1,3 +1,5 @@
+import 'dotenv/config'
+import './listeners'
 import express from 'express'
 import helmet from 'helmet'
 import errorHandler from './middlewares/error-handler'
