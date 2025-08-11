@@ -22,10 +22,21 @@ export function remove(id: string) {
 }
 
 export async function getAll(levelId: LevelEnum) {
-  const { rows } = await pool.query('SELECT * FROM topics WHERE level_id = $1 ORDER BY title', [
-    levelId,
-  ])
-  return rows as TopicRow[]
+  const q = `
+    SELECT 
+      t.*,
+      COALESCE(total_videos, 0)::INTEGER AS total_videos,
+      COALESCE(stats.total_seconds, 0)::INTEGER AS total_seconds
+    FROM topics t
+    LEFT JOIN (
+      SELECT v.topic_id, COUNT(v.id) AS total_videos, SUM(v.duration_seconds) AS total_seconds
+      FROM videos v
+      GROUP BY v.topic_id
+    ) stats ON stats.topic_id = t.id
+    WHERE t.level_id = $1
+  `
+  const { rows } = await pool.query(q, [levelId])
+  return rows as (TopicRow & { total_videos: number; total_seconds: number })[]
 }
 
 interface GetCompletedCountRow {

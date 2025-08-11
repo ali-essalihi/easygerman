@@ -57,6 +57,8 @@ export async function getAllTopics(req: Request, res: Response<GetAllTopicsRes>)
     topics: topics.map((t) => ({
       id: t.id,
       title: t.title,
+      totalVideos: t.total_videos,
+      totalSeconds: t.total_seconds,
     })),
   })
 }

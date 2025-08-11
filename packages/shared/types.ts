@@ -43,6 +43,8 @@ export interface GetAllTopicsRes {
   topics: {
     id: string
     title: string
+    totalVideos: number
+    totalSeconds: number
   }[]
 }
 
