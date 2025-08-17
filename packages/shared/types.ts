@@ -58,11 +58,11 @@ export interface GetAllVideosRes {
 
 export type LevelId = z.infer<typeof schemas.levelIdSchema>
 
-export interface GetTopicDetailRes {
+export type GetTopicDetailRes = {
   levelId: LevelId
   id: string
   title: string
-}
+} & Pick<GetAllTopicsRes['topics'][number], 'totalVideos' | 'totalSeconds'>
 
 export interface GetVideoDetailRes {
   levelId: LevelId

@@ -23,6 +23,7 @@ events.on('topic.deleted', ({ levelId, topicId }) => {
 events.on('video.created', ({ levelId, topicId }) => {
   revalidateTags([
     tagGenerators.videosList(topicId),
+    tagGenerators.topicDetail(topicId),
     tagGenerators.topicsList(levelId),
     tagGenerators.levelSummary(levelId),
   ])
@@ -36,6 +37,7 @@ events.on('video.deleted', ({ levelId, topicId, ytVideoId }) => {
   revalidateTags([
     tagGenerators.videoDetail(ytVideoId),
     tagGenerators.videosList(topicId),
+    tagGenerators.topicDetail(topicId),
     tagGenerators.topicsList(levelId),
     tagGenerators.levelSummary(levelId),
   ])

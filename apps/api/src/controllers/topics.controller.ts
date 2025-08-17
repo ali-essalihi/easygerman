@@ -64,9 +64,14 @@ export async function getAllTopics(req: Request, res: Response<GetAllTopicsRes>)
 }
 
 export async function getTopicDetail(req: Request, res: Response<GetTopicDetailRes>) {
+  const topicWithSummary = (await topicsModel.getAll(req.topic.level_id)).find(
+    (t) => t.id === req.topic.id
+  )!
   res.json({
     id: req.topic.id,
     levelId: req.topic.level_id,
     title: req.topic.title,
+    totalVideos: topicWithSummary.total_videos,
+    totalSeconds: topicWithSummary.total_seconds,
   })
 }

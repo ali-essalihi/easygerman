@@ -34,6 +34,7 @@ export async function getAll(levelId: LevelEnum) {
       GROUP BY v.topic_id
     ) stats ON stats.topic_id = t.id
     WHERE t.level_id = $1
+    ORDER BY t.title
   `
   const { rows } = await pool.query(q, [levelId])
   return rows as (TopicRow & { total_videos: number; total_seconds: number })[]
