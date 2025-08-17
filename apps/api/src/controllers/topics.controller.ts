@@ -25,7 +25,7 @@ export async function createTopic(req: Request, res: Response) {
 export async function updateTopicTitle(req: Request, res: Response) {
   const body = req.body as UpdateTopicTitleReq
   await topicsModel.updateTitle(req.topic.id, body.newTitle)
-  events.emit('topic.title.updated', {
+  events.emit('topic.updated', {
     levelId: req.topic.level_id,
     topicId: req.topic.id,
   })

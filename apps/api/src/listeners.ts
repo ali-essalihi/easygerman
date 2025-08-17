@@ -7,7 +7,7 @@ events.on('topic.created', ({ levelId }) => {
   revalidateTags([tagGenerators.topicsList(levelId), tagGenerators.levelSummary(levelId)])
 })
 
-events.on('topic.title.updated', ({ levelId, topicId }) => {
+events.on('topic.updated', ({ levelId, topicId }) => {
   revalidateTags([tagGenerators.topicDetail(topicId), tagGenerators.topicsList(levelId)])
 })
 

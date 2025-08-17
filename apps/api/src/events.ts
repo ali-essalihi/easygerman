@@ -4,7 +4,7 @@ import { EventEmitter } from 'events'
 interface EventPayloads {
   // Topics
   'topic.created': { levelId: LevelId }
-  'topic.title.updated': { levelId: LevelId; topicId: string }
+  'topic.updated': { levelId: LevelId; topicId: string }
   'topic.deleted': { levelId: LevelId; topicId: string }
 
   // Videos
