@@ -5,3 +5,6 @@ export const tagGenerators = {
   topicDetail: (topicId: string) => `${topicId}-detail`,
   videoDetail: (ytVideoId: string) => `${ytVideoId}-detail`,
 }
+
+export const REVALIDATION_TAG_PARAM = 'tag'
+export const REVALIDATION_SECRET_HEADER = 'X-Revalidation-Secret'
