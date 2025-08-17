@@ -60,7 +60,7 @@ export async function createVideo(req: Request, res: Response) {
 
 export async function changeVideoOrder(req: Request, res: Response) {
   const { before, after } = req.body as ChangeVideoOrderReq
-  const { ytVideoId } = req.params
+  const ytVideoId = req.video.yt_video_id
 
   if (!before && !after) {
     throw new AppError(400, 'Either "before" or "after" must be provided.')
