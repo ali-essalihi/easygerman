@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import * as schemas from './schemas'
 
-export type UserRole = z.infer<typeof schemas.userRoleSchema>
+export type UserRole = 'learner' | 'admin'
 
 export interface GetGoogleAuthUrlRes {
   url: string
