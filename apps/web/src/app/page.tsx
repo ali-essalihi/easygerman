@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export default function Home() {
   return (
-    <main className="container py-12">
+    <>
       <h1 className="text-3xl text-gray-800 font-bold tracking-tight">
         Structured German Learning from Easy German Videos
       </h1>
@@ -20,6 +20,6 @@ export default function Home() {
           </Link>
         ))}
       </div>
-    </main>
+    </>
   )
 }

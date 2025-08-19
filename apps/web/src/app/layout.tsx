@@ -26,7 +26,7 @@ export default function RootLayout({
         >
           <Toaster position="top-center" />
           <Header />
-          {children}
+          <main className="container py-12">{children}</main>
         </SWRConfig>
       </body>
     </html>
