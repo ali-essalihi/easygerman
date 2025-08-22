@@ -1,3 +1,5 @@
+import { MdOutlineVideoLibrary, MdOutlineBook } from 'react-icons/md'
+import { RxClock } from 'react-icons/rx'
 import type { CEFRLevel } from '@/types/CEFRLevel'
 
 export const levels: CEFRLevel[] = [
@@ -8,3 +10,8 @@ export const levels: CEFRLevel[] = [
   { level: 'C1', label: 'Advanced', color: '#b38200' },
   { level: 'C2', label: 'Proficient', color: '#800061' },
 ]
+
+// Icons
+export const VideoLibIcon = MdOutlineVideoLibrary
+export const ClockIcon = RxClock
+export const TopicIcon = MdOutlineBook

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@easygerman/shared": "workspace:*",
+    "@radix-ui/react-progress": "^1.1.7",
     "class-variance-authority": "^0.7.1",
     "ky": "^1.8.2",
     "next": "14.2.30",

@@ -23,3 +23,8 @@ export default function useUser() {
     logout,
   }
 }
+
+export function useCurrentUser() {
+  const { data: user } = useSWR<GetCurrentUserRes | null>('/me', fetcher)
+  return user
+}
