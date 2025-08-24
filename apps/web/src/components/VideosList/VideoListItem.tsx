@@ -25,7 +25,7 @@ export default function VideoListItem({ levelId, topicId, video, order }: Props)
             {formatVideoDuration(video.durationSeconds)}
           </span>
         </div>
-        <div className="flex-1 ms-2">
+        <div className="flex-1 ml-2">
           <div className="text-primary mb-1"># {order}</div>
           <h2 className="text-sm mb-2 font-medium">
             <Link

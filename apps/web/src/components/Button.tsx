@@ -83,7 +83,7 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button className={buttonStyles({ color, variant, className })} {...props}>
-      {StartIcon && <StartIcon className="me-2" />}
+      {StartIcon && <StartIcon className="mr-2" />}
       {children}
     </button>
   )

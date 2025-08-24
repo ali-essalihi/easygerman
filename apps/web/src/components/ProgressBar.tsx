@@ -10,7 +10,7 @@ export default function ProgressBar({ label, ...props }: Props) {
   return (
     <div>
       <div className="flex items-center justify-between mb-1">
-        <div className="text-gray-600 text-sm me-2">{label}</div>
+        <div className="text-gray-600 text-sm mr-2">{label}</div>
         <div className="text-gray-600 text-sm">{progress}%</div>
       </div>
       <RadixProgress.Root
