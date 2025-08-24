@@ -20,7 +20,8 @@ export default function useVideosProgress(levelId: LevelId, topicId: string) {
   const user = useCurrentUser()
   const { data: completedVideos, mutate } = useSWR(
     user ? [topicId, 'videos/progress'] : null,
-    fetcher
+    fetcher,
+    { revalidateIfStale: false }
   )
   const { mutate: globalMutate } = useSWRConfig()
 

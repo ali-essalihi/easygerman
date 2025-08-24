@@ -19,7 +19,6 @@ export default function RootLayout({
         <SWRConfig
           value={{
             shouldRetryOnError: false,
-            revalidateIfStale: false,
             revalidateOnFocus: false,
             revalidateOnReconnect: false,
           }}

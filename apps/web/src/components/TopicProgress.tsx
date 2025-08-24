@@ -17,9 +17,7 @@ const fetcher = ([levelId, url]: [LevelId, string]) =>
 
 export default function TopicProgress({ levelId, topicId, totalVideos }: Props) {
   const user = useCurrentUser()
-  const { data: topicsProgress } = useSWR(user ? [levelId, 'topics/progress'] : null, fetcher, {
-    revalidateIfStale: true,
-  })
+  const { data: topicsProgress } = useSWR(user ? [levelId, 'topics/progress'] : null, fetcher)
 
   if (!topicsProgress) {
     return null

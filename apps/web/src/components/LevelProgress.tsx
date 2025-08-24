@@ -15,9 +15,7 @@ const fetcher = (url: string) => api.get<GetLevelProgressRes>(url).json()
 
 export default function LevelProgress({ levelId, summary }: Props) {
   const user = useCurrentUser()
-  const { data: progress } = useSWR(user ? `levels/${levelId}/progress` : null, fetcher, {
-    revalidateIfStale: true,
-  })
+  const { data: progress } = useSWR(user ? `levels/${levelId}/progress` : null, fetcher)
 
   if (!progress) {
     return null

@@ -6,7 +6,9 @@ import { useCallback } from 'react'
 const fetcher = () => api.get<GetCurrentUserRes>('auth/me').json()
 
 export default function useUser() {
-  const { data, isLoading, mutate } = useSWR<GetCurrentUserRes | null>('/me', fetcher)
+  const { data, isLoading, mutate } = useSWR<GetCurrentUserRes | null>('/me', fetcher, {
+    revalidateIfStale: false,
+  })
   const { mutate: globalMutate } = useSWRConfig()
 
   const logout = useCallback(() => {
@@ -25,6 +27,8 @@ export default function useUser() {
 }
 
 export function useCurrentUser() {
-  const { data: user } = useSWR<GetCurrentUserRes | null>('/me', fetcher)
+  const { data: user } = useSWR<GetCurrentUserRes | null>('/me', fetcher, {
+    revalidateIfStale: false,
+  })
   return user
 }
