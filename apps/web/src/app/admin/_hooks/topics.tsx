@@ -48,7 +48,7 @@ export function useTopicsActions(levelId: LevelId) {
       populateCache: false,
     })
       .then(() => mutate(levelSummaryKey))
-      .catch((err) => toast.error('Failed to create topic'))
+      .catch(() => toast.error('Failed to create topic'))
   }, [])
 
   const remove = useCallback((topicId: string) => {
@@ -60,7 +60,7 @@ export function useTopicsActions(levelId: LevelId) {
         mutate(levelSummaryKey)
         mutate(`topics/${topicId}`)
       })
-      .catch((err) => toast.error('Failed to delete topic'))
+      .catch(() => toast.error('Failed to delete topic'))
   }, [])
 
   const updateTitle = useCallback((topicId: string) => {
@@ -71,7 +71,7 @@ export function useTopicsActions(levelId: LevelId) {
       populateCache: false,
     })
       .then(() => mutate(`topics/${topicId}`))
-      .catch((err) => toast.error('Failed to update topic title'))
+      .catch(() => toast.error('Failed to update topic title'))
   }, [])
 
   return { create, remove, updateTitle }

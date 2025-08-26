@@ -68,9 +68,7 @@ export default function useVideosProgress(levelId: LevelId, topicId: string) {
           globalMutate(`levels/${levelId}/progress`)
           globalMutate([levelId, 'topics/progress'])
         })
-        .catch((err) => {
-          toast.error('Failed to toggle video completion.')
-        })
+        .catch(() => toast.error('Failed to toggle video completion.'))
     },
     [completedVideos]
   )

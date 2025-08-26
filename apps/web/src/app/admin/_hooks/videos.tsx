@@ -55,7 +55,7 @@ export function useVideosActions(levelId: LevelId, topicId: string) {
           toast.error(message)
         } else throw err
       })
-      .catch((err) => toast.error('Failed to create video'))
+      .catch(() => toast.error('Failed to create video'))
   }, [])
 
   const remove = useCallback((ytVideoId: string) => {
@@ -68,7 +68,7 @@ export function useVideosActions(levelId: LevelId, topicId: string) {
         mutate(topicsListKey)
         mutate(levelSummaryKey)
       })
-      .catch((err) => toast.error('Failed to delete video'))
+      .catch(() => toast.error('Failed to delete video'))
   }, [])
 
   const changeOder = useCallback(
@@ -77,7 +77,7 @@ export function useVideosActions(levelId: LevelId, topicId: string) {
         optimisticData: newVideos,
         populateCache: false,
         revalidate: false,
-      }).catch((err) => toast.error('Failed to change video order'))
+      }).catch(() => toast.error('Failed to change video order'))
     },
     []
   )

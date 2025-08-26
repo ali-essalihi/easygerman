@@ -31,11 +31,13 @@ async function fetchApiData<T, N extends boolean = false>(
     next: { tags },
   })
   if (handleNotFound && res.status === 404) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return null as any
   }
   if (res.status !== 200) {
     throw new Error(`Unexpected response (${res.status}) from ${reqUrl.toString()}`)
   }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return res.json() as any
 }
 
