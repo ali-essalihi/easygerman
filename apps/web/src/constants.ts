@@ -1,4 +1,5 @@
 import { MdOutlineVideoLibrary, MdOutlineBook } from 'react-icons/md'
+import { LuPen, LuTrash } from 'react-icons/lu'
 import { RxClock } from 'react-icons/rx'
 import type { CEFRLevel } from '@/types/CEFRLevel'
 
@@ -15,3 +16,5 @@ export const levels: CEFRLevel[] = [
 export const VideoLibIcon = MdOutlineVideoLibrary
 export const ClockIcon = RxClock
 export const TopicIcon = MdOutlineBook
+export const EditIcon = LuPen
+export const DeleteIcon = LuTrash
