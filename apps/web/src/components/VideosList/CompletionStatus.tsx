@@ -16,7 +16,7 @@ export default function CompletionStatus({ levelId, topicId, ytVideoId }: Props)
   const completed = !!isVideoCompleted(ytVideoId)
   return (
     <div className={cx('flex items-center text-green-600', !completed && 'invisible')}>
-      <LuCircleCheck size={16} className="mr-2" />
+      <LuCircleCheck size={16} className="mr-2" aria-hidden />
       <span className="text-sm">Completed</span>
     </div>
   )

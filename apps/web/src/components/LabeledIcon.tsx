@@ -8,7 +8,7 @@ interface Props {
 export default function LabeledIcon({ Icon, label }: Props) {
   return (
     <div className="flex items-center">
-      <Icon size={16} className="text-gray-600" />
+      <Icon size={16} className="text-gray-600" aria-hidden />
       <span className="ml-1">{label}</span>
     </div>
   )

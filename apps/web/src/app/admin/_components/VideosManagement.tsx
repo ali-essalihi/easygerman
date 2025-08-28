@@ -114,7 +114,7 @@ function VideoListItem({ video, actions }: VideoListItemProps) {
     <div ref={setNodeRef} style={style}>
       <div className="flex py-2 hover:bg-gray-200 my-2 rounded">
         <div className="px-1 self-center cursor-grab" {...listeners} {...attributes}>
-          <MdDragHandle size={20} className="text-gray-600" />
+          <MdDragHandle size={20} className="text-gray-600" aria-hidden />
         </div>
         <div className="bg-gray-200 relative w-1/3 h-20 sm:w-1/4 sm:h-24">
           <img
