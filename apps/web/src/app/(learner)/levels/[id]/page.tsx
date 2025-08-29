@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { levelIdSchema } from '@easygerman/shared/schemas'
 import { fetchLevelSummary, fetchTopicsList } from '@/fetchers'
 import { notFound } from 'next/navigation'
@@ -6,7 +7,16 @@ import TopicsList from '@/components/TopicsList'
 import LevelOverview from '@/components/LevelOverview'
 import Breadcrumb from '@/components/Breadcrumb'
 
-export default async function LevelPage({ params }: { params: { id: string } }) {
+type Params = { id: string }
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { data: levelId, success } = levelIdSchema.safeParse(params.id)
+  if (!success) return {}
+  const title = `Easy German - Level ${levelId}`
+  return { title }
+}
+
+export default async function LevelPage({ params }: { params: Params }) {
   const levelIdParsed = levelIdSchema.safeParse(params.id)
 
   if (!levelIdParsed.success) {

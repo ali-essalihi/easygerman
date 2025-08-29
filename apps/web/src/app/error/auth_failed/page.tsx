@@ -1,3 +1,9 @@
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Authentication Failed',
+}
+
 export default function AuthFailed() {
   return (
     <div className="text-center">

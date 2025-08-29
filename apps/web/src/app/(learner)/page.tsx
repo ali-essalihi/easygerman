@@ -1,6 +1,11 @@
+import { Metadata } from 'next'
 import LevelCard from '@/components/LevelCard'
 import { levels } from '@/constants'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Easy German - Home',
+}
 
 export default function Home() {
   return (

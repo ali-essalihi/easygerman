@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Breadcrumb from '@/components/Breadcrumb'
 import LabeledIcon from '@/components/LabeledIcon'
 import TopicProgress from '@/components/TopicProgress'
@@ -8,7 +9,18 @@ import { formatTotalDuration } from '@/utils/format'
 import { topicIdSchema } from '@easygerman/shared/schemas'
 import { notFound } from 'next/navigation'
 
-export default async function TopicPage({ params }: { params: { id: string } }) {
+type Params = { id: string }
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { data: topicId, success } = topicIdSchema.safeParse(params.id)
+  if (!success) return {}
+  const topic = await fetchTopicDetail(topicId)
+  if (!topic) return {}
+  const title = `Easy German - ${topic.levelId} ${topic.title}`
+  return { title }
+}
+
+export default async function TopicPage({ params }: { params: Params }) {
   const topicIdParsed = topicIdSchema.safeParse(params.id)
 
   if (!topicIdParsed.success) {
