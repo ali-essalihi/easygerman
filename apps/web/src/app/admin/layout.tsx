@@ -1,18 +1,10 @@
-'use client'
+import EnsureAdmin from './_components/EnsureAdmin'
+import type { Metadata } from 'next'
 
-import { redirect } from 'next/navigation'
-import useUser from '@/hooks/useUser'
+export const metadata: Metadata = {
+  robots: { index: false },
+}
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { isLoading, user } = useUser()
-
-  if (isLoading) {
-    return null
-  }
-
-  if (user && user.role === 'admin') {
-    return children
-  }
-
-  redirect('/')
+  return <EnsureAdmin>{children}</EnsureAdmin>
 }
