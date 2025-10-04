@@ -6,7 +6,8 @@
     "build": "tsc",
     "type-check": "tsc --noEmit",
     "migrate": "node-pg-migrate -j sql",
-    "seed": "node scripts/seed.js"
+    "seed": "node scripts/seed.js",
+    "test": "vitest run"
   },
   "dependencies": {
     "@easygerman/shared": "workspace:*",
@@ -33,8 +34,13 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node-fetch": "^2.6.13",
     "@types/pg": "^8.15.4",
+    "@types/set-cookie-parser": "^2.4.10",
+    "@types/supertest": "^6.0.3",
     "node-pg-migrate": "^8.0.3",
+    "set-cookie-parser": "^2.7.1",
+    "supertest": "^7.1.4",
     "tsx": "^4.20.3",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
   }
 }
